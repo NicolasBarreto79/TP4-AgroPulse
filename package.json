@@ -1,0 +1,34 @@
+{
+  "name": "agropulse",
+  "version": "0.1.0",
+  "private": true,
+  "workspaces": [
+    "apps/*",
+    "services/*",
+    "packages/*"
+  ],
+  "scripts": {
+    "build": "npm run build --workspace @agropulse/contracts && npm run build:service --workspaces --if-present",
+    "typecheck": "npm run typecheck:bootstrap && npm run typecheck --workspaces --if-present",
+    "typecheck:bootstrap": "tsc -p scripts/tsconfig.json --noEmit",
+    "test:contracts": "npm run test --workspace @agropulse/contracts",
+    "start:app": "npm run start --workspace @agropulse/app",
+    "start:worker": "npm run start --workspace @agropulse/worker",
+    "start:simulator": "npm run start --workspace @agropulse/simulator",
+    "start:command-publisher": "npm run start --workspace @agropulse/command-publisher",
+    "bootstrap:users": "tsx --env-file=.env scripts/bootstrap-users.ts",
+    "supabase:start": "supabase start",
+    "supabase:reset": "supabase db reset",
+    "supabase:test": "supabase test db",
+    "infra:config": "docker compose -f infra/docker-compose.yml config",
+    "infra:up": "docker compose -f infra/docker-compose.yml up --build"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "devDependencies": {
+    "@supabase/supabase-js": "^2.116.0",
+    "supabase": "^2.117.0",
+    "tsx": "^4.23.13"
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "expo": {
+    "name": "AgroPulse",
+    "slug": "agropulse",
+    "version": "0.1.0",
+    "orientation": "portrait",
+    "scheme": "agropulse",
+    "userInterfaceStyle": "automatic",
+    "newArchEnabled": true,
+    "ios": {
+      "supportsTablet": false,
+      "bundleIdentifier": "edu.agropulse.app"
+    },
+    "plugins": [
+      "expo-router",
+      "expo-status-bar"
+    ]
+  }
+}

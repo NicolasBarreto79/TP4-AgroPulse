@@ -1,0 +1,23 @@
+{
+  "name": "@agropulse/worker",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "npm run build --workspace @agropulse/contracts && npm run build:service",
+    "build:service": "tsc -p tsconfig.build.json",
+    "start": "tsx --env-file=../../.env src/index.ts",
+    "start:container": "node dist/index.js",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@agropulse/contracts": "0.1.0",
+    "@supabase/supabase-js": "^2.117.1",
+    "kafkajs": "^2.2.4"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.0",
+    "tsx": "^4.19.0",
+    "typescript": "~5.9.2"
+  }
+}

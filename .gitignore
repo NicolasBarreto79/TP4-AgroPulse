@@ -1,0 +1,26 @@
+node_modules/
+dist/
+coverage/
+.expo/
+.expo-shared/
+web-build/
+
+# Environment files and local secrets
+.env
+.env.*
+!.env.example
+**/.env
+**/.env.*
+!**/.env.example
+
+# Local Supabase state
+supabase/.branches/
+supabase/.temp/
+
+# OS and editor files
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+*.log
+tmp/
