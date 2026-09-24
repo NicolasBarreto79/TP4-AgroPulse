@@ -1,4 +1,4 @@
-# AgroPulse 🌾
+# AgroPulse
 
 AgroPulse es un sistema de agricultura de precisión impulsado por eventos (Event-Driven Architecture) con soporte multi-inquilino (multi-tenant), mapas geoespaciales con PostGIS, telemetría de suelo en tiempo real, pipeline de comandos transaccionales (Transactional Outbox Pattern) y aplicación móvil desarrollada en Expo SDK 57 / React Native.
 
@@ -6,7 +6,7 @@ AgroPulse es un sistema de agricultura de precisión impulsado por eventos (Even
 
 ---
 
-## 🏗️ Arquitectura del Sistema
+## Arquitectura del Sistema
 
 ```mermaid
 flowchart TD
@@ -36,7 +36,7 @@ flowchart TD
 
 ---
 
-## 🚀 Guía de Inicio Rápido
+## Guía de Inicio Rápido
 
 ### 1. Prerrequisitos
 - Node.js 20+ y npm
@@ -93,7 +93,7 @@ Escanee el código QR con la app **Expo Go** en su iPhone o presione `w` para ab
 
 ---
 
-## 👥 Cuentas de Demostración (1-Tap Login)
+## Cuentas de Demostración (1-Tap Login)
 
 La pantalla de login incluye botones de acceso rápido para probar inmediatamente los distintos roles y organizaciones sin necesidad de tipear credenciales:
 
@@ -106,7 +106,7 @@ La pantalla de login incluye botones de acceso rápido para probar inmediatament
 
 ---
 
-## 🧪 Pruebas Automatizadas
+## Pruebas Automatizadas
 
 El proyecto cuenta con suites automatizadas que validan la totalidad de las reglas de negocio y seguridad:
 
@@ -123,26 +123,26 @@ npm run typecheck
 
 ---
 
-## 📱 Pantallas de la Aplicación
+## Pantallas de la Aplicación
 
-1. **🌾 Lotes (`/`):**
+1. **Lotes (`/`):**
    - Listado de lotes con semáforo agronómico (`optimal`, `dry`, `wet`, `stale`).
    - Barra de nivel de humedad en tiempo real con indicador de antigüedad de lectura.
    - Selector multi-establecimiento para alternar entre organizaciones.
-2. **🗺️ Mapa (`/map`):**
+2. **Mapa (`/map`):**
    - Polígonos de lotes georreferenciados sobre el mapa con codificación por color según su estado hídrico.
    - Ubicación GPS del usuario y verificación geoespacial en tiempo real con PostGIS (`is_point_inside_plot`).
-3. **🔔 Alertas (`/alerts`):**
+3. **Alertas (`/alerts`):**
    - Detección de estrés hídrico (`low_moisture`) y desconexión de estaciones (`station_stale`).
    - Filtros de estado y resolución interactiva de alertas.
-4. **📊 Diagnóstico (`/diagnosis`):**
+4. **Diagnóstico (`/diagnosis`):**
    - Medición de latencia de telemetría y salud de conectividad Supabase / Redpanda.
    - Auditoría de identidad: User UID, rol activo y conteo de entidades por inquilino.
-5. **👤 Cuenta (`/account`):**
+5. **Cuenta (`/account`):**
    - Selector interactivo de organizaciones.
    - Resumen de permisos asignados al rol activo.
    - Cierre de sesión seguro.
-6. **📈 Detalle de Lote (`/plot/[id]`):**
+6. **Detalle de Lote (`/plot/[id]`):**
    - Gráfico SVG de evolución de humedad (últimas 6 horas) con franja sombreada de régimen óptimo.
    - Editor de umbrales de humedad (restringido al rol Productor mediante RPC `update_plot_thresholds`).
    - Control de válvulas con modal de duración (15, 30, 60 min).
@@ -151,7 +151,7 @@ npm run typecheck
 
 ---
 
-## 📂 Estructura del Repositorio
+## Estructura del Repositorio
 
 | Directorio | Propósito |
 |---|---|
