@@ -1,3 +1,5 @@
+import type { PlotStatus } from "@agropulse/contracts";
+
 export const colors = {
   primary: "#1E4D2B",
   primaryHover: "#163820",
@@ -32,14 +34,14 @@ export const colors = {
   info: "#0288D1",
 };
 
-export const statusColors = {
+export const statusColors: Record<PlotStatus, string> = {
   optimal: colors.status.optimal,
   dry: colors.status.dry,
   stale: colors.status.stale,
   wet: colors.status.wet,
 };
 
-export const statusLabels: Record<string, string> = {
+export const statusLabels: Record<PlotStatus, string> = {
   optimal: "Óptimo",
   dry: "Seco (Riego Requerido)",
   stale: "Desconectado (Sin señal)",

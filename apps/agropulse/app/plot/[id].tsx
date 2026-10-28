@@ -10,6 +10,7 @@ import {
   Alert,
   Modal,
   RefreshControl,
+  Platform,
 } from "react-native";
 import { useLocalSearchParams, useRouter } from "expo-router";
 import { supabase } from "../../src/lib/supabase";
@@ -211,10 +212,18 @@ export default function PlotDetailScreen() {
     fetchPlotDetails();
   };
 
+  const showAlert = (title: string, message?: string) => {
+    if (Platform.OS === "web") {
+      window.alert(message ? `${title}: ${message}` : title);
+    } else {
+      Alert.alert(title, message);
+    }
+  };
+
   // Handle Save Thresholds
   const handleSaveThresholds = async () => {
     if (!isProducer) {
-      Alert.alert("Acción no permitida", "Solo el rol Productor puede modificar los umbrales.");
+      showAlert("Acción no permitida", "Solo el rol Productor puede modificar los umbrales.");
       return;
     }
 
@@ -222,7 +231,7 @@ export default function PlotDetailScreen() {
     const max = parseFloat(maxInput);
 
     if (isNaN(min) || isNaN(max) || min < 0 || max > 100 || min >= max) {
-      Alert.alert(
+      showAlert(
         "Umbrales Inválidos",
         "El umbral mínimo debe ser menor que el máximo y ambos deben estar entre 0% y 100%."
       );
@@ -238,13 +247,13 @@ export default function PlotDetailScreen() {
       });
 
       if (error) {
-        Alert.alert("Error al guardar", error.message);
+        showAlert("Error al guardar", error.message);
       } else {
-        Alert.alert("Éxito", "Umbrales agronómicos actualizados correctamente.");
+        showAlert("Éxito", "Umbrales agronómicos actualizados correctamente.");
         fetchPlotDetails();
       }
     } catch (err: any) {
-      Alert.alert("Error", err.message || "Error al actualizar umbrales.");
+      showAlert("Error", err.message || "Error al actualizar umbrales.");
     } finally {
       setSavingThresholds(false);
     }
@@ -253,7 +262,7 @@ export default function PlotDetailScreen() {
   // Open Irrigation Prompt
   const handleOpenIrrigationPrompt = (valve: ValveItem) => {
     if (!canActuate) {
-      Alert.alert(
+      showAlert(
         "Solo Lectura",
         "El rol Asesor Técnico no cuenta con permisos para operar válvulas de riego."
       );
@@ -280,13 +289,37 @@ export default function PlotDetailScreen() {
       });
 
       if (error) {
-        Alert.alert("Error al emitir comando", error.message);
+        showAlert("Error al emitir comando", error.message);
       } else {
         // Command queued in outbox! It will be dispatched to Redpanda and applied in <5s
         fetchPlotDetails();
       }
     } catch (err: any) {
-      Alert.alert("Error inesperado", err.message || "No se pudo emitir el comando.");
+      showAlert("Error inesperado", err.message || "No se pudo emitir el comando.");
+    } finally {
+      setActionLoading(false);
+    }
+  };
+
+  // Execute Close Valve
+  const executeCloseValve = async (valve: ValveItem) => {
+    setActionLoading(true);
+    try {
+      const requestId = generateUUID();
+      const { error } = await supabase.rpc("create_irrigation_command", {
+        target_valve_id: valve.id,
+        request_id: requestId,
+        requested_action: "closed",
+        requested_duration_minutes: null,
+      });
+
+      if (error) {
+        showAlert("Error al cerrar válvula", error.message);
+      } else {
+        fetchPlotDetails();
+      }
+    } catch (err: any) {
+      showAlert("Error", err.message || "Error al emitir comando de cierre.");
     } finally {
       setActionLoading(false);
     }
@@ -295,7 +328,15 @@ export default function PlotDetailScreen() {
   // Close Valve Command
   const handleCloseValve = (valve: ValveItem) => {
     if (!canActuate) {
-      Alert.alert("Solo Lectura", "No tiene permisos para operar válvulas de riego.");
+      showAlert("Solo Lectura", "No tiene permisos para operar válvulas de riego.");
+      return;
+    }
+
+    if (Platform.OS === "web") {
+      const confirmed = window.confirm(`¿Desea cerrar inmediatamente la válvula "${valve.name}"?`);
+      if (confirmed) {
+        executeCloseValve(valve);
+      }
       return;
     }
 
@@ -307,28 +348,7 @@ export default function PlotDetailScreen() {
         {
           text: "Cerrar Válvula",
           style: "destructive",
-          onPress: async () => {
-            setActionLoading(true);
-            try {
-              const requestId = generateUUID();
-              const { error } = await supabase.rpc("create_irrigation_command", {
-                target_valve_id: valve.id,
-                request_id: requestId,
-                requested_action: "closed",
-                requested_duration_minutes: null,
-              });
-
-              if (error) {
-                Alert.alert("Error al cerrar válvula", error.message);
-              } else {
-                fetchPlotDetails();
-              }
-            } catch (err: any) {
-              Alert.alert("Error", err.message || "Error al emitir comando de cierre.");
-            } finally {
-              setActionLoading(false);
-            }
-          },
+          onPress: () => executeCloseValve(valve),
         },
       ]
     );
@@ -343,13 +363,13 @@ export default function PlotDetailScreen() {
       });
 
       if (error) {
-        Alert.alert("Error al cancelar", error.message);
+        showAlert("Error al cancelar", error.message);
       } else {
-        Alert.alert("Cancelado", "El comando de riego pendiente fue cancelado.");
+        showAlert("Cancelado", "El comando de riego pendiente fue cancelado.");
         fetchPlotDetails();
       }
     } catch (err: any) {
-      Alert.alert("Error", err.message || "Error al cancelar comando.");
+      showAlert("Error", err.message || "Error al cancelar comando.");
     } finally {
       setActionLoading(false);
     }

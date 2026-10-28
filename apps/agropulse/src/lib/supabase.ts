@@ -2,8 +2,14 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { createClient } from "@supabase/supabase-js";
 import Constants from "expo-constants";
 
+import { Platform } from "react-native";
+
 function resolveSupabaseUrl(): string {
   const envUrl = process.env.EXPO_PUBLIC_SUPABASE_URL;
+
+  if (Platform.OS === "web") {
+    return envUrl || "http://127.0.0.1:54321";
+  }
 
   // If running on a physical mobile device with Expo Go, 127.0.0.1 / localhost will fail.
   // We resolve the computer's LAN IP from the Expo Metro debugger host.
@@ -24,7 +30,7 @@ function resolveSupabaseUrl(): string {
   }
 
   // Fallback to active Wi-Fi LAN IP
-  return "http://192.168.0.13:54321";
+  return "http://192.168.0.102:54321";
 }
 
 const supabaseUrl = resolveSupabaseUrl();

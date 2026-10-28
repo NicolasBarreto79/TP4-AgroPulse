@@ -6,6 +6,14 @@ AgroPulse es un sistema de agricultura de precisión impulsado por eventos (Even
 
 ---
 
+## Demostración en Video (Versión Mobile)
+
+Demostración del flujo completo de AgroPulse en resolución mobile (412x890), cubriendo autenticación multi-tenant, telemetría de suelo en vivo, edición de umbrales, pipeline de riego transaccional (Transactional Outbox Pattern), mapa satelital cadastral y diagnóstico de infraestructura:
+
+![Demostración AgroPulse Mobile](docs/demo_mobile.webp)
+
+---
+
 ## Arquitectura del Sistema
 
 ```mermaid
